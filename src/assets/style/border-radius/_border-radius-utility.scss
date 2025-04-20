@@ -1,0 +1,68 @@
+@use 'sass:math';
+@use 'sass:map';
+@use '../breakpoints/breakpoints-variables' as *;
+
+// Percentage scale (0-100% in 5% increments)
+@function generate-percentage-scale() {
+  $scale: ();
+  @for $i from 0 through 20 {
+    $key: $i * 5;
+    $value: math.percentage(math.div($key, 100));
+    $scale: map.merge($scale, ($key: $value));
+  }
+  @return $scale;
+}
+
+// Pixel scale (0-500px in 5px increments)
+@function generate-pixel-scale() {
+  $scale: ();
+  @for $i from 0 through 100 {
+    $key: $i * 5;
+    $value: #{$key}px;
+    $scale: map.merge($scale, ($key: $value));
+  }
+  @return $scale;
+}
+
+$percentage-scale: generate-percentage-scale();
+$pixel-scale: generate-pixel-scale();
+
+// Base border-radius utilities
+@each $size, $value in $percentage-scale {
+  .b-r-#{$size} {
+    border-radius: $value !important;
+  }
+}
+
+@each $size, $value in $pixel-scale {
+  .b-r-#{$size}x {
+    border-radius: $value !important;
+  }
+}
+
+// Responsive border-radius utilities
+$breakpoints: (
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl,
+  'xxl': $xxl
+);
+
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    // Percentage responsive
+    @each $pct, $value in $percentage-scale {
+      .b-r-#{$breakpoint}-#{$pct} {
+        border-radius: $value !important;
+      }
+    }
+
+    // Pixel responsive
+    @each $px, $value in $pixel-scale {
+      .b-r-#{$breakpoint}-#{$px}x {
+        border-radius: $value !important;
+      }
+    }
+  }
+}

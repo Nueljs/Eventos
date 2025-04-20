@@ -1,0 +1,103 @@
+@use 'sass:list'; // Add this line at the top
+@use '../breakpoints/breakpoints-variables' as *;
+
+// Padding scale (matches margin scale for consistency)
+$padding-scale: (
+  0: 0,
+  5: 5px,
+  10: 10px,
+  15: 15px,
+  20: 20px,
+  25: 25px,
+  30: 30px,
+  40: 40px,
+  50: 50px,
+  100: 100px
+);
+
+// Padding directions
+$padding-directions: (
+  'p':  ('padding'),
+  'pt': ('padding-top'),
+  'pr': ('padding-right'),
+  'pb': ('padding-bottom'),
+  'pl': ('padding-left'),
+  'px': ('padding-left', 'padding-right'),
+  'py': ('padding-top', 'padding-bottom')
+);
+
+// Base padding utilities
+@each $dir, $properties in $padding-directions {
+  // Single value padding
+  @each $size, $value in $padding-scale {
+    .#{$dir}-#{$size} {
+      @each $prop in $properties {
+        #{$prop}: $value !important;
+      }
+    }
+  }
+
+  // Two-value padding (vertical horizontal for 'p', individual for others)
+  @if $dir == 'p' {
+    @each $v, $v-value in $padding-scale {
+      @each $h, $h-value in $padding-scale {
+        .#{$dir}-#{$v}-#{$h} {
+          padding: $v-value $h-value !important;
+        }
+      }
+    }
+  } @else if list.length($properties) == 2 {
+    @each $first, $first-value in $padding-scale {
+      @each $second, $second-value in $padding-scale {
+        .#{$dir}-#{$first}-#{$second} {
+          #{list.nth($properties, 1)}: $first-value !important;
+          #{list.nth($properties, 2)}: $second-value !important;
+        }
+      }
+    }
+  }
+}
+
+// Responsive padding utilities
+$breakpoints: (
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl,
+  'xxl': $xxl
+);
+
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    @each $dir, $properties in $padding-directions {
+      // Single value responsive
+      @each $s, $val in $padding-scale {
+        .#{$dir}-#{$breakpoint}-#{$s} {
+          @each $prop in $properties {
+            #{$prop}: $val !important;
+          }
+        }
+      }
+
+      // Two-value responsive
+      @if $dir == 'p' {
+        @each $v, $v-val in $padding-scale {
+          @each $h, $h-val in $padding-scale {
+            .#{$dir}-#{$breakpoint}-#{$v}-#{$h} {
+              padding: $v-val $h-val !important;
+            }
+          }
+        }
+      } @else if list.length($properties) == 2 {
+        @each $first, $first-val in $padding-scale {
+          @each $second, $second-val in $padding-scale {
+            .#{$dir}-#{$breakpoint}-#{$first}-#{$second} {
+              #{list.nth($properties, 1)}: $first-val !important;
+              #{list.nth($properties, 2)}: $second-val !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}

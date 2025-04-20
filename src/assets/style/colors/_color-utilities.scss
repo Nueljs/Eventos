@@ -1,0 +1,21 @@
+@use './colors-variables' as *;
+
+/* Background color utilities */
+.bg-primary { background-color: $primary !important; }
+.bg-secondary { background-color: $secondary !important; }
+
+.bg-light { background-color: $light !important; }
+.bg-dark { background-color: $dark !important; }
+
+.bg-white { background-color: $white !important; }
+.bg-black { background-color: $black !important; }
+
+/* Text color utilities */
+.text-primary { color: $primary !important; }
+.text-secondary { color: $secondary !important; }
+
+.text-light { color: $light !important; }
+.text-dark { color: $dark !important; }
+
+.text-white { color: $white !important; }
+.text-black { color: $black !important; }

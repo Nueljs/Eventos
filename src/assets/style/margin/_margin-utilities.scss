@@ -1,0 +1,84 @@
+@use '../breakpoints/breakpoints-variables' as *;
+
+// Margin scale definition (px-based)
+$margin-scale: (
+  0: 0,
+  5: 5px,
+  10: 10px,
+  15: 15px,
+  20: 20px,
+  25: 25px,
+  30: 30px,
+  40: 40px,
+  50: 50px,
+  100: 100px
+);
+
+// Margin directions
+$margin-directions: (
+  'm':  ('margin'),
+  'mt': ('margin-top'),
+  'mr': ('margin-right'),
+  'mb': ('margin-bottom'),
+  'ml': ('margin-left'),
+  'mx': ('margin-left', 'margin-right'),
+  'my': ('margin-top', 'margin-bottom')
+);
+
+// Base margin utilities
+@each $dir, $properties in $margin-directions {
+  // Single value margin
+  @each $size, $value in $margin-scale {
+    .#{$dir}-#{$size} {
+      @each $prop in $properties {
+        #{$prop}: $value !important;
+      }
+    }
+  }
+
+  // Two-value margin (vertical horizontal)
+  @each $v, $v-value in $margin-scale {
+    @each $h, $h-value in $margin-scale {
+      .#{$dir}-#{$v}-#{$h} {
+        @each $prop in $properties {
+          #{$prop}: $v-value $h-value !important;
+        }
+      }
+    }
+  }
+}
+
+// Responsive margin utilities
+$breakpoints: (
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl,
+  'xxl': $xxl
+);
+
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    @each $dir, $properties in $margin-directions {
+      // Single value responsive
+      @each $s, $val in $margin-scale {
+        .#{$dir}-#{$breakpoint}-#{$s} {
+          @each $prop in $properties {
+            #{$prop}: $val !important;
+          }
+        }
+      }
+
+      // Two-value responsive
+      @each $v, $v-val in $margin-scale {
+        @each $h, $h-val in $margin-scale {
+          .#{$dir}-#{$breakpoint}-#{$v}-#{$h} {
+            @each $prop in $properties {
+              #{$prop}: $v-val $h-val !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}

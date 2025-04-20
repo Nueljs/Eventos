@@ -1,0 +1,90 @@
+@use '../breakpoints/breakpoints-variables' as *;
+
+// Display types
+$display-values: (
+  'block': block,
+  'inline': inline,
+  'inline-block': inline-block,
+  'flex': flex,
+  'inline-flex': inline-flex,
+  'grid': grid,
+  'inline-grid': inline-grid,
+  'none': none
+);
+
+// Alignment types
+$align-types: (
+  'justify-content': (
+    'start': flex-start,
+    'center': center,
+    'end': flex-end,
+    'between': space-between,
+    'around': space-around,
+    'evenly': space-evenly
+  ),
+  'align-items': (
+    'start': flex-start,
+    'center': center,
+    'end': flex-end,
+    'baseline': baseline,
+    'stretch': stretch
+  ),
+  'align-content': (
+    'start': flex-start,
+    'center': center,
+    'end': flex-end,
+    'between': space-between,
+    'around': space-around,
+    'stretch': stretch
+  )
+);
+
+// Base display classes
+@each $name, $value in $display-values {
+  .d-#{$name} {
+    display: $value !important;
+  }
+}
+
+// Base alignment classes
+@each $type, $props in $align-types {
+  @each $suffix, $value in $props {
+    .#{$type}-#{$suffix} {
+      #{$type}: $value !important;
+    }
+  }
+}
+
+// Responsive display classes
+$breakpoints: (
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl,
+  'xxl': $xxl
+);
+
+// Generate responsive display utilities
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    @each $name, $value in $display-values {
+      .d-#{$breakpoint}-#{$name} {
+        display: $value !important;
+      }
+    }
+  }
+}
+
+// Generate responsive alignment utilities
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    @each $type, $props in $align-types {
+      @each $suffix, $value in $props {
+        .#{$type}-#{$breakpoint}-#{$suffix} {
+          #{$type}: $value !important;
+        }
+      }
+    }
+  }
+}
+

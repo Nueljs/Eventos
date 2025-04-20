@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+/* Estilos Base */
+header {
+  background-color: #4D194D;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  position: relative;
+  z-index: 1000;
+}
+
+.logo-header {
+  width: 50px;
+  height: auto;
+}
+
+.nav-header {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 15px 20px;
+  transition: all 0.3s;
+}
+
+.nav-header:hover {
+  color: #B44CB4;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Menú Responsive */
+.nav-container {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #4D194D;
+  z-index: 1001;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.nav-container.active {
+  display: block;
+}
+
+.nav-container ul {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.nav-container li {
+  margin-bottom: 10px;
+}
+
+/* Search Bar */
+.search-box {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 300px;
+  width: 100%;
+}
+
+.search-box-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.search-box-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Iconos */
+.icons {
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 15px;
+  transition: all 0.3s;
+}
+
+.icons:hover {
+  color: #B44CB4;
+}
+
+.icons-none {
+  display: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .navbar-toggler {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 24px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .nav-container {
+    top: 60px;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+}

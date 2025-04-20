@@ -1,0 +1,136 @@
+@use 'sass:math';
+@use 'sass:map';
+@use '../breakpoints/breakpoints-variables' as *;
+
+// Percentage scale generator (0-100% in 5% increments)
+@function generate-percentage-scale() {
+  $scale: ();
+  @for $i from 0 through 20 {
+    $key: $i * 5;
+    $value: math.percentage(math.div($key, 100));
+    $scale: map.merge($scale, ($key: $value));
+  }
+  @return $scale;
+}
+
+// Pixel scale generator (0-500px in 5px increments)
+@function generate-pixel-scale() {
+  $scale: ();
+  @for $i from 0 through 100 {
+    $key: $i * 5;
+    $value: #{$key}px;
+    $scale: map.merge($scale, ($key: $value));
+  }
+  @return $scale;
+}
+
+// Viewport width scale generator (0-100vw in 5% increments)
+@function generate-vw-scale() {
+  $scale: ();
+  @for $i from 0 through 20 {
+    $key: $i * 5;
+    $value: #{$key}vw;
+    $scale: map.merge($scale, ($key: $value));
+  }
+  @return $scale;
+}
+
+// Viewport height scale generator (0-100vh in 5% increments)
+@function generate-vh-scale() {
+  $scale: ();
+  @for $i from 0 through 20 {
+    $key: $i * 5;
+    $value: #{$key}vh;
+    $scale: map.merge($scale, ($key: $value));
+  }
+  @return $scale;
+}
+
+$percentage-scale: generate-percentage-scale();
+$pixel-scale: generate-pixel-scale();
+$vw-scale: generate-vw-scale();
+$vh-scale: generate-vh-scale();
+
+// Sizing properties
+$size-properties: (
+  'w':  'width',
+  'h':  'height',
+  'mw': 'max-width',
+  'mh': 'max-height',
+  'minw': 'min-width',
+  'minh': 'min-height'
+);
+
+// Base sizing utilities
+@each $prop, $css-property in $size-properties {
+  // Percentage-based classes
+  @each $size, $value in $percentage-scale {
+    .#{$prop}-#{$size} {
+      #{$css-property}: $value !important;
+    }
+  }
+
+  // Pixel-based classes
+  @each $size, $value in $pixel-scale {
+    .#{$prop}-#{$size}x {
+      #{$css-property}: $value !important;
+    }
+  }
+
+  // Viewport width classes
+  @each $size, $value in $vw-scale {
+    .#{$prop}-#{$size}vw {
+      #{$css-property}: $value !important;
+    }
+  }
+
+  // Viewport height classes
+  @each $size, $value in $vh-scale {
+    .#{$prop}-#{$size}vh {
+      #{$css-property}: $value !important;
+    }
+  }
+}
+
+// Responsive sizing utilities
+$breakpoints: (
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl,
+  'xxl': $xxl
+);
+
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    @each $prop, $css-property in $size-properties {
+      // Percentage responsive
+      @each $pct, $value in $percentage-scale {
+        .#{$prop}-#{$breakpoint}-#{$pct} {
+          #{$css-property}: $value !important;
+        }
+      }
+
+      // Pixel responsive
+      @each $px, $value in $pixel-scale {
+        .#{$prop}-#{$breakpoint}-#{$px}x {
+          #{$css-property}: $value !important;
+        }
+      }
+
+      // Viewport width responsive
+      @each $vw, $value in $vw-scale {
+        .#{$prop}-#{$breakpoint}-#{$vw}vw {
+          #{$css-property}: $value !important;
+        }
+      }
+
+      // Viewport height responsive
+      @each $vh, $value in $vh-scale {
+        .#{$prop}-#{$breakpoint}-#{$vh}vh {
+          #{$css-property}: $value !important;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+@use '../breakpoints/breakpoints-variables' as *;
+
+// Gap scale definition (px-based)
+$gap-scale: (
+  0: 0,
+  5: 5px,
+  10: 10px,
+  15: 15px,
+  20: 20px,
+  25: 25px,
+  30: 30px,
+  40: 40px,
+  50: 50px,
+  100: 100px
+);
+
+// Base gap utilities
+@each $size, $value in $gap-scale {
+  // Shorthand gap
+  .gap-#{$size} {
+    gap: $value !important;
+  }
+
+  // Vertical (row) gap
+  .gapv-#{$size} {
+    row-gap: $value !important;
+  }
+
+  // Horizontal (column) gap
+  .gaph-#{$size} {
+    column-gap: $value !important;
+  }
+}
+
+// Responsive gap utilities
+$breakpoints: (
+  'sm': $sm,
+  'md': $md,
+  'lg': $lg,
+  'xl': $xl,
+  'xxl': $xxl
+);
+
+@each $breakpoint, $size in $breakpoints {
+  @media (min-width: $size) {
+    @each $gap, $value in $gap-scale {
+      // Shorthand gap
+      .gap-#{$breakpoint}-#{$gap} {
+        gap: $value !important;
+      }
+
+      // Vertical gap
+      .gapv-#{$breakpoint}-#{$gap} {
+        row-gap: $value !important;
+      }
+
+      // Horizontal gap
+      .gaph-#{$breakpoint}-#{$gap} {
+        column-gap: $value !important;
+      }
+    }
+  }
+}
